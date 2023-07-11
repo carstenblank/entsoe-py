@@ -1429,7 +1429,7 @@ class EntsoePandasClient(EntsoeRawClient):
             country_code_to=area_to,
             start=start,
             end=end)
-        ts = parse_crossborder_flows(text)
+        ts = parse_crossborder_flows(text, area_from.tz)
         ts = ts.tz_convert(area_from.tz)
         ts = ts.truncate(before=start, after=end)
         return ts

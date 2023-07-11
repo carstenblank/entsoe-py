@@ -249,11 +249,12 @@ def parse_water_hydro(xml_text, tz):
     return series
 
 
-def parse_crossborder_flows(xml_text):
+def parse_crossborder_flows(xml_text, tz=None):
     """
     Parameters
     ----------
     xml_text : str
+    tz: str
 
     Returns
     -------
@@ -261,7 +262,7 @@ def parse_crossborder_flows(xml_text):
     """
     series = []
     for soup in _extract_timeseries(xml_text):
-        series.append(_parse_crossborder_flows_timeseries(soup))
+        series.append(_parse_crossborder_flows_timeseries(soup, tz))
     series = pd.concat(series)
     series = series.sort_index()
     return series
@@ -778,11 +779,12 @@ def _parse_datetimeindex(soup, tz=None):
     return index
 
 
-def _parse_crossborder_flows_timeseries(soup):
+def _parse_crossborder_flows_timeseries(soup, tz):
     """
     Parameters
     ----------
     soup : bs4.element.tag
+    tz: str
 
     Returns
     -------
@@ -796,7 +798,7 @@ def _parse_crossborder_flows_timeseries(soup):
 
     series = pd.Series(index=positions, data=flows)
     series = series.sort_index()
-    series.index = _parse_datetimeindex(soup)
+    series.index = _parse_datetimeindex(soup, tz)
 
     return series
 
